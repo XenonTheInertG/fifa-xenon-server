@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FIFA Stream Player</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h2 {
+      margin: 10px 0;
+    }
+
+    video {
+      width: 95%;
+      max-width: 1000px;
+      margin-top: 10px;
+      border-radius: 10px;
+      background: black;
+    }
+
+    .credit {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #aaa;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Live Stream Player</h2>
+
+  <video id="video" controls autoplay></video>
+
+  <div class="credit">
+    Credit: Mahin Ahmed ~ XenonTheInertG
+  </div>
+
+  <script>
+    const video = document.getElementById("video");
+
+    const streamURL =
+      "http://103.151.61.12/T-Sports.kutta/video.m3u8";
+
+    function startStream() {
+      if (Hls.isSupported()) {
+        const hls = new Hls({
+          enableWorker: true,
+          lowLatencyMode: true
+        });
+
+        hls.loadSource(streamURL);
+        hls.attachMedia(video);
+
+        hls.on(Hls.Events.ERROR, function (event, data) {
+          console.log("HLS error:", data);
+        });
+
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = streamURL;
+      } else {
+        alert("HLS not supported in this browser");
+      }
+    }
+
+    startStream();
+  </script>
+
+</body>
+</html>
